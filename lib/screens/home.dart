@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/screens/detail.dart';
+import 'package:flutter_application_1/screens/pemasukan.dart';
+import 'package:flutter_application_1/screens/pengaturan.dart';
+import 'package:flutter_application_1/screens/pengeluaran.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +26,14 @@ class _MyWidgetState extends State<HomeScreen> {
           Card(
             margin: const EdgeInsets.all(8),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PemasukanScreen(),
+                  ),
+                );
+              },
               splashColor: Colors.blue,
               child: Center(
                   child: Column(
@@ -44,7 +55,14 @@ class _MyWidgetState extends State<HomeScreen> {
           Card(
             margin: const EdgeInsets.all(8),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PengeluaranScreen(),
+                  ),
+                );
+              },
               splashColor: Colors.blue,
               child: Center(
                   child: Column(
@@ -66,7 +84,14 @@ class _MyWidgetState extends State<HomeScreen> {
           Card(
             margin: const EdgeInsets.all(8),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailScreen(),
+                  ),
+                );
+              },
               splashColor: Colors.blue,
               child: Center(
                   child: Column(
@@ -88,7 +113,14 @@ class _MyWidgetState extends State<HomeScreen> {
           Card(
             margin: const EdgeInsets.all(8),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PengaturanScreen(),
+                  ),
+                );
+              },
               splashColor: Colors.blue,
               child: Center(
                   child: Column(

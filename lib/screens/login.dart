@@ -19,19 +19,35 @@ class _LoginScreenState extends State<LoginScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Sign In'),
-      // ),
+      appBar: AppBar(
+        leading: Icon(Icons.supervised_user_circle),
+        leadingWidth: 100,
+        backgroundColor: Colors.blue,
+        title: const Text("Sign In"),
+      ),
       body: SafeArea(
         child: Form(
           key: formKey,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Center(
               child: Container(
-                child: Image.asset('assets/logo.jpeg'),
+                child: Image.asset('assets/lingkaran.jpg'),
                 width: 100,
                 height: 100,
               ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              "My Fintech",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black12,
+                  fontSize: 25.0),
+            ),
+            SizedBox(
+              height: 30.0,
             ),
             UnderLineInputField(
               controller: usrName,
