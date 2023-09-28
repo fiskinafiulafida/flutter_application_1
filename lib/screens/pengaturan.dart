@@ -102,22 +102,80 @@ class _MyWidgetState extends State<PengaturanScreen> {
                   ],
                 ),
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Container(
-                  child: Image.asset('assets/lingkaran.jpg'),
-                  width: 100,
-                  height: 100,
-                ),
-                Container(
-                  child: Text(
-                    '2141764140_FiskiyaNafiulA',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
+              Row(
+                children: [
+                  Container(
+                    height: 165,
+                    width: 165,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0xFF3E616B), width: 2.0),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.asset(
+                        'assets/FiskiyaNafiulAfida.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-              ]),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'About This App',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF2B4856)),
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        'Aplikasi ini dibuat oleh:',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF2B4856)),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'Nama: Fiskiya Nafiul Afida',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF2B4856)),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'NIM: 2141764140',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF2B4856)),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'Tanggal: 25 September 2023',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF2B4856)),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ],
           ),
         ));
