@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/methods/textField.dart';
 import 'package:flutter_application_1/screens/register.dart';
+import 'package:flutter_application_1/model/user.dart';
+import 'package:flutter_application_1/screens/home.dart';
+import 'package:flutter_application_1/database/databasehelper.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,6 +16,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final usrName = TextEditingController();
   final usrPass = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  // untuk button login
+  login() async {
+    final db = DatabaseHelper();
+
+    var result = await db.authentication(
+        Users(usrName: usrName.text, usrPassword: usrPass.text));
+
+    if (result) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Silahkan Cek Pass dan Username !!!")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     // function login
+                    login();
                   }
                 }),
             Row(
