@@ -86,75 +86,78 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.blue,
         title: const Text("Sign In"),
       ),
-      body: SafeArea(
-        child: Form(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Center(
-              child: Container(
-                child: Image.asset('assets/lingkaran.jpg'),
-                width: 100,
-                height: 100,
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Text(
-              "My Fintech",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black12,
-                  fontSize: 25.0),
-            ),
-            SizedBox(
-              height: 30.0,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                controller: usernameController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
-                    hintText: 'Enter valid username'),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              child: TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Enter secure password'),
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                height: 60,
-                color: Colors.blue,
-                child: Text(
-                  "LOGIN",
-                  style: TextStyle(color: Colors.white),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Form(
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Center(
+                child: Container(
+                  child: Image.asset('assets/lingkaran.jpg'),
+                  width: 100,
+                  height: 100,
                 ),
-                onPressed: () {
-                  _login();
-                }),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Apakah Kamu Memiliki Akun ? "),
-                TextButton(onPressed: () {}, child: Text("Sign Up"))
-              ],
-            ),
-          ]),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                "My Fintech",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black12,
+                    fontSize: 25.0),
+              ),
+              SizedBox(
+                height: 30.0,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: TextField(
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Username',
+                      hintText: 'Enter valid username'),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                    left: 15.0, right: 15.0, top: 15, bottom: 0),
+                child: TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                      hintText: 'Enter secure password'),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  height: 60,
+                  color: Colors.blue,
+                  child: Text(
+                    "LOGIN",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    _login();
+                  }),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Apakah Kamu Memiliki Akun ? "),
+                  TextButton(onPressed: () {}, child: Text("Sign Up"))
+                ],
+              ),
+            ]),
+          ),
         ),
       ),
     );

@@ -62,7 +62,7 @@ class _PengeluaranScreenState extends State<PengeluaranScreen> {
           leading: Icon(Icons.account_circle_rounded),
           leadingWidth: 100,
           backgroundColor: Colors.blue,
-          title: const Text("Create Pemasukan"),
+          title: const Text("Create Pengeluaran"),
         ),
         body: Padding(
           padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),

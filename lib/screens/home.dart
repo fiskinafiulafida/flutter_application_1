@@ -113,6 +113,8 @@ class _MyWidgetState extends State<HomeScreen> {
               ),
               Center(
                 child: Container(
+                  height: 120,
+                  width: 120,
                   child: Image.asset(
                     "assets/grafik.png",
                   ),
