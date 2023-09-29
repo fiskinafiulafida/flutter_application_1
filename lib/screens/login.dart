@@ -146,21 +146,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   _login();
                 }),
-            // Row(
-            //   crossAxisAlignment: CrossAxisAlignment.center,
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Text("Apakah Kamu Memiliki Akun ? "),
-            //     TextButton(
-            //         onPressed: () {
-            //           Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => RegisterScreen()));
-            //         },
-            //         child: Text("Sign Up"))
-            //   ],
-            // ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Apakah Kamu Memiliki Akun ? "),
+                TextButton(onPressed: () {}, child: Text("Sign Up"))
+              ],
+            ),
           ]),
         ),
       ),

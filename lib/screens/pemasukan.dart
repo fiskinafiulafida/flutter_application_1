@@ -119,7 +119,10 @@ class _PemasukanScreenState extends State<PemasukanScreen> {
                       child: MaterialButton(
                         minWidth: double.maxFinite, // set minWidth to maxFinite
                         color: Colors.orange,
-                        onPressed: () {},
+                        onPressed: () {
+                          nominalController.clear();
+                          ketController.clear();
+                        },
                         child: Text("RESET",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
