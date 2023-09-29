@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/database/databasehelper.dart';
+import 'package:flutter_application_1/model/user.dart';
 import 'package:flutter_application_1/screens/home.dart';
 
 class PengaturanScreen extends StatefulWidget {
@@ -9,6 +11,79 @@ class PengaturanScreen extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<PengaturanScreen> {
+  bool _obscureText = true;
+  bool _obscureText2 = true;
+
+  var passwordController = TextEditingController();
+  var newPasswordController = TextEditingController();
+
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showSuccessMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Success"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void onChangePassword() async {
+    final username = 'user';
+    final passwordSaatIni = passwordController.text;
+    final newPassword = newPasswordController.text;
+
+    final dbHelper = DatabaseHelper();
+
+    final existingUser = await dbHelper.getUserByUsername(username);
+    if (existingUser == null || existingUser.password != passwordSaatIni) {
+      showErrorMessage('Password saat ini tidak benar');
+      return;
+    }
+
+    final updatedUser = Users(
+      id: existingUser.id,
+      username: existingUser.username,
+      password: newPassword,
+    );
+
+    final rowsAffected = await dbHelper.updateUserPassword(updatedUser);
+    if (rowsAffected > 0) {
+      showSuccessMessage('Password berhasil diperbarui');
+    } else {
+      showErrorMessage('Gagal memperbarui password');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +98,11 @@ class _MyWidgetState extends State<PengaturanScreen> {
           child: ListView(
             children: <Widget>[
               // Password Old
-              Padding(
+              Container(
                 padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
                 child: TextField(
+                  controller: passwordController,
+                  obscureText: _obscureText,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     icon: Icon(Icons.password_outlined),
@@ -34,13 +111,19 @@ class _MyWidgetState extends State<PengaturanScreen> {
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
-                  onChanged: (value) {},
+                  onTap: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
                 ),
               ),
               // Password New
-              Padding(
+              Container(
                 padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
                 child: TextField(
+                  controller: newPasswordController,
+                  obscureText: _obscureText2,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     icon: Icon(Icons.password),
@@ -49,7 +132,11 @@ class _MyWidgetState extends State<PengaturanScreen> {
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
-                  onChanged: (value) {},
+                  onTap: () {
+                    setState(() {
+                      _obscureText2 = !_obscureText2;
+                    });
+                  },
                 ),
               ),
               // tombol save
@@ -62,11 +149,7 @@ class _MyWidgetState extends State<PengaturanScreen> {
                         minWidth: double.maxFinite, // set minWidth to maxFinite
                         color: Colors.green,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()),
-                          );
+                          onChangePassword();
                         },
                         child: Text("SAVE",
                             style: TextStyle(
