@@ -1,42 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/methods/textField.dart';
 import 'package:flutter_application_1/screens/register.dart';
 import 'package:flutter_application_1/model/user.dart';
 import 'package:flutter_application_1/screens/home.dart';
 import 'package:flutter_application_1/database/databasehelper.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final usrName = TextEditingController();
-  final usrPass = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
 
-  // untuk button login
-  login() async {
-    final db = DatabaseHelper();
+  var usernameController = TextEditingController();
+  var passwordController = TextEditingController();
 
-    var result = await db.authentication(
-        Users(usrName: usrName.text, usrPassword: usrPass.text));
+  Future<void> _login() async {
+    final username = usernameController.text;
+    final password = passwordController.text;
 
-    if (result) {
+    final userLogin = Users(username: "admin", password: "admin");
+    await DatabaseHelper.addUser(userLogin);
+
+    if (username.isEmpty || password.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Username dan password tidak boleh kosong.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    final user = await DatabaseHelper.loginUser(username, password);
+
+    if (user != null) {
+      // Jika login berhasil, navigasikan ke halaman beranda (HomeScreen)
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+      );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Silahkan Cek Pass dan Username !!!")));
+      // Jika login gagal, tampilkan pesan error
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Username atau password salah.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.supervised_user_circle),
@@ -46,7 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: SafeArea(
         child: Form(
-          key: formKey,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Center(
               child: Container(
@@ -68,30 +109,34 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 30.0,
             ),
-            UnderLineInputField(
-              controller: usrName,
-              hint: "Username",
-              validator: (value) {
-                if (value.isEmpty) {
-                  return "Masukkan Username";
-                }
-                return null;
-              },
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: TextField(
+                controller: usernameController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Username',
+                    hintText: 'Enter valid username'),
+              ),
             ),
-            UnderLineInputField(
-              controller: usrPass,
-              hint: "Password",
-              validator: (value) {
-                if (value.isEmpty) {
-                  return "Masukkan Password";
-                }
-                return null;
-              },
+            Container(
+              padding: const EdgeInsets.only(
+                  left: 15.0, right: 15.0, top: 15, bottom: 0),
+              child: TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'Enter secure password'),
+              ),
+            ),
+            SizedBox(
+              height: 20.0,
             ),
             MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
-                minWidth: size.width * .95,
                 height: 60,
                 color: Colors.blue,
                 child: Text(
@@ -99,26 +144,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    // function login
-                    login();
-                  }
+                  _login();
                 }),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Apakah Kamu Memiliki Akun ? "),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterScreen()));
-                    },
-                    child: Text("Sign Up"))
-              ],
-            ),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     Text("Apakah Kamu Memiliki Akun ? "),
+            //     TextButton(
+            //         onPressed: () {
+            //           Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) => RegisterScreen()));
+            //         },
+            //         child: Text("Sign Up"))
+            //   ],
+            // ),
           ]),
         ),
       ),

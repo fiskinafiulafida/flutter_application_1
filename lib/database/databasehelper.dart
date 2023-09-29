@@ -4,33 +4,61 @@ import 'package:sqflite/sqflite.dart';
 import '../model/user.dart';
 
 class DatabaseHelper {
-  final databaseName = "testDB.db";
-  String userTable =
-      "Create Tabel users (usrId integer primary key autoincrement, usrName Text, usrPassword Text)";
-  String userData = "inser into users values(1, 'flutter', '123')";
+  static const int _version = 1;
+  static const String _dbName = "Finance.db";
 
-  Future<Database> initDB() async {
-    final databasePath = await getDatabasesPath();
-    final path = join(databasePath, databaseName);
-
-    return await openDatabase(path, version: 1, onCreate: (db, version) async {
-      // defaut untuk user login
-      await db.execute(userData);
-      // user tabel
-      await db.rawQuery(userTable);
-    });
+  static Future<Database> _getDB() async {
+    return openDatabase(join(await getDatabasesPath(), _dbName),
+        onCreate: (db, version) async {
+      await db.execute('''
+        CREATE TABLE User(
+          id INTEGER PRIMARY KEY,
+          username TEXT NOT NULL,
+          password TEXT NOT NULL
+        )
+      ''');
+    }, version: _version);
   }
 
-  // method for login
-  Future<bool> authentication(Users users) async {
-    final Database db = await initDB();
-    var result = await db.rawQuery(
-        "select * from users usrName = '${users.usrName}' and users usrPassword = '${users.usrPassword}'");
+  Future<int> updateUserPassword(Users user) async {
+    final db = await _getDB();
+    return await db.update(
+      "User",
+      user.toJson(),
+      where: 'id = ?',
+      whereArgs: [user.id],
+    );
+  }
 
-    if (result.isNotEmpty) {
-      return true;
-    } else {
-      return false;
+  Future<Users?> getUserByUsername(String username) async {
+    final db = await _getDB();
+    final List<Map<String, dynamic>> maps = await db.query(
+      "User",
+      where: 'username = ?',
+      whereArgs: [username],
+    );
+    if (maps.isEmpty) {
+      return null;
     }
+    return Users.fromJson(maps.first);
+  }
+
+  static Future<int> addUser(Users user) async {
+    final db = await _getDB();
+    return await db.insert("User", user.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<Users?> loginUser(String username, String password) async {
+    final db = await _getDB();
+    final List<Map<String, dynamic>> maps = await db.query(
+      "User",
+      where: "username = ? AND password = ?",
+      whereArgs: [username, password],
+    );
+    if (maps.isEmpty) {
+      return null;
+    }
+    return Users.fromJson(maps[0]);
   }
 }
